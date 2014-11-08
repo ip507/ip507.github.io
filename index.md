@@ -1,7 +1,7 @@
 ---
 layout: page
-title: doradayee 
-tagline: personal blog 
+title: IP507 
+tagline: ip
 ---
 {% include JB/setup %}
 

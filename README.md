@@ -1,4 +1,1 @@
-doradayee.github.io
-===================
-
-my blog
+page for finding ip of sever 507
