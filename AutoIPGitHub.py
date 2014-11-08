@@ -27,7 +27,11 @@ def WriteGithubMDPage(ip):
 	fl.close()
 
 if __name__ == "__main__":
+	#get and ensure ip
+	
 	strIP = GetIP()
+	
+	#write blog
 	shutil.rmtree('_posts',True)
 	os.mkdir('_posts')
 	WriteGithubMDPage(strIP)
@@ -35,7 +39,7 @@ if __name__ == "__main__":
 	#git command
 	ctime = datetime.datetime.now()
 	strtime = '%d-%.2d-%.2d %.2d:%.2d:%.2d' % (ctime.year,ctime.month,ctime.day,ctime.hour,ctime.minute,ctime.second)
-	os.system('git add . --all')
-	os.system('git commit -m \"' + strtime + '\"')
-	os.system('git push origin master')
+	print os.system('git add . --all')
+	print os.system('git commit -m \"' + strtime + '\"')
+	print os.system('git push origin master')
 	
