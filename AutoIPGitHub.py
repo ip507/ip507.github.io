@@ -35,7 +35,7 @@ if __name__ == "__main__":
 	#git command
 	ctime = datetime.datetime.now()
 	strtime = '%d-%.2d-%.2d %.2d:%.2d:%.2d' % (ctime.year,ctime.month,ctime.day,ctime.hour,ctime.minute,ctime.second)
-	os.system('git add .')
+	os.system('git add . --all')
 	os.system('git commit -m \"' + strtime + '\"')
 	os.system('git push origin master')
 	
