@@ -28,8 +28,12 @@ def WriteGithubMDPage(ip):
 
 if __name__ == "__main__":
 	#get and ensure ip
-	
+	fip = open('LastIP.txt')
+	lastip = fip.read()
+	fip.close()
 	strIP = GetIP()
+	if strIP == lastip:
+		exit(0)
 	
 	#write blog
 	shutil.rmtree('_posts',True)
@@ -39,7 +43,11 @@ if __name__ == "__main__":
 	#git command
 	ctime = datetime.datetime.now()
 	strtime = '%d-%.2d-%.2d %.2d:%.2d:%.2d' % (ctime.year,ctime.month,ctime.day,ctime.hour,ctime.minute,ctime.second)
-	print os.system('git add . --all')
-	print os.system('git commit -m \"' + strtime + '\"')
-	print os.system('git push origin1 master')
+	s1 = os.system('git add . --all')
+	s2 = os.system('git commit -m \"' + strtime + '\"')
+	s3 = os.system('git push origin master')
 	
+	if s1==0 and s2==0 and s3==0:
+		fip = open('LastIP.txt','w')
+		fip.write(strIP)
+		fip.close()
