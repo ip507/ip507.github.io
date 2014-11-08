@@ -41,5 +41,5 @@ if __name__ == "__main__":
 	strtime = '%d-%.2d-%.2d %.2d:%.2d:%.2d' % (ctime.year,ctime.month,ctime.day,ctime.hour,ctime.minute,ctime.second)
 	print os.system('git add . --all')
 	print os.system('git commit -m \"' + strtime + '\"')
-	print os.system('git push origin master')
+	print os.system('git push origin1 master')
 	
