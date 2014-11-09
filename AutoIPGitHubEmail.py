@@ -4,7 +4,33 @@ import urllib
 import datetime
 import shutil
 import os
+import smtplib  
+from email.mime.text import MIMEText
 
+mailto_list=["autoipsend@126.com"] 
+mail_host="smtp.126.com"  #url of stmp server
+mail_user="autoipsend@126.com"    #user id
+mail_pass="357pis"   #user password
+mail_postfix="126.com"  #url of stmp
+
+#send email
+def send_mail(to_list,sub,content):  
+    me="hello"+"<"+mail_user+"@"+mail_postfix+">"  
+    msg = MIMEText(content,_subtype='plain',_charset='gb2312')  
+    msg['Subject'] = sub  
+    msg['From'] = me  
+    msg['To'] = ";".join(to_list)  
+    try:  
+        server = smtplib.SMTP()  
+        server.connect(mail_host)  
+        server.login(mail_user,mail_pass)  
+        server.sendmail(me, to_list, msg.as_string())  
+        server.close()  
+        return True  
+    except Exception, e:  
+        print str(e)  
+        return False
+	
 #get ip from router web page
 def GetIP():
 	strRaw = urllib.urlopen("http://admin:admin@192.168.1.1/userRpm/StatusRpm.htm").read()
@@ -32,6 +58,14 @@ if __name__ == "__main__":
 	lastip = fip.read()
 	fip.close()
 	strIP = GetIP()
+	
+	#send email
+	if send_mail(mailto_list,"AutoIP",strIP):
+		print "success"
+	else:
+		print "failed"
+		
+	#decide if refresh blog (and send mail)
 	if strIP == lastip:
 		exit(0)
 	
