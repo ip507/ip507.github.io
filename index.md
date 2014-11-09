@@ -1,6 +1,6 @@
 ---
 layout: page
-title: IP507 
+title: 天津大学26E507实验室服务器IP自动更新网站 
 tagline: ip
 ---
 {% include JB/setup %}
