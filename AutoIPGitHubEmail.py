@@ -57,6 +57,13 @@ if __name__ == "__main__":
 	fip = open('LastIP.txt')
 	lastip = fip.read()
 	fip.close()
+	
+	#dns
+	fipdns = open('lastIPDNS.txt')
+	lastipdns = fipdns.read()
+	fipdns.close()
+	
+	#get current ip
 	strIP = GetIP()
 	
 	#send email
@@ -66,22 +73,28 @@ if __name__ == "__main__":
 		print "failed"
 		
 	#decide if refresh blog (and send mail)
-	if strIP == lastip:
-		exit(0)
-	
-	#write blog
-	shutil.rmtree('_posts',True)
-	os.mkdir('_posts')
-	WriteGithubMDPage(strIP)
-	
-	#git command
-	ctime = datetime.datetime.now()
-	strtime = '%d-%.2d-%.2d %.2d:%.2d:%.2d' % (ctime.year,ctime.month,ctime.day,ctime.hour,ctime.minute,ctime.second)
-	s1 = os.system('git add . --all')
-	s2 = os.system('git commit -m \"' + strtime + '\"')
-	s3 = os.system('git push origin master')
-	
-	if s1==0 and s2==0 and s3==0:
-		fip = open('LastIP.txt','w')
-		fip.write(strIP)
-		fip.close()
+	if strIP != lastip:	
+		#write blog
+		shutil.rmtree('_posts',True)
+		os.mkdir('_posts')
+		WriteGithubMDPage(strIP)
+		
+		#git command
+		ctime = datetime.datetime.now()
+		strtime = '%d-%.2d-%.2d %.2d:%.2d:%.2d' % (ctime.year,ctime.month,ctime.day,ctime.hour,ctime.minute,ctime.second)
+		s1 = os.system('git add . --all')
+		s2 = os.system('git commit -m \"' + strtime + '\"')
+		s3 = os.system('git push origin master')
+		
+		if s1==0 and s2==0 and s3==0:
+			fip = open('LastIP.txt','w')
+			fip.write(strIP)
+			fip.close()
+			
+	#decide if refresh ddns
+	if strIP != lastipdns:
+		pagesta = urllib.urlopen('http://update.dnsexit.com/RemoteUpdate.sv?login=autoipsend&password=357pis&host=ip507.linkpc.net&myip=' + strIP)
+		if pagesta.getcode() == 200:
+			fip = open('LastIPDNS.txt','w')
+			fip.write(strIP)
+			fip.close()

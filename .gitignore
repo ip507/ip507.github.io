@@ -10,4 +10,5 @@ Thumbs.db
 .rvmrc
 AutoIPGitHub.py
 LastIP.txt
+LastIPDNS.txt
 AutoIPGitHubEmail.py
