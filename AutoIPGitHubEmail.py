@@ -15,7 +15,7 @@ mail_postfix="126.com"  #url of stmp
 
 #send email
 def send_mail(to_list,sub,content):  
-    me="hello"+"<"+mail_user+"@"+mail_postfix+">"  
+    me="IP Auto Sender"+"<"+mail_user+"@"+mail_postfix+">"  
     msg = MIMEText(content,_subtype='plain',_charset='gb2312')  
     msg['Subject'] = sub  
     msg['From'] = me  
@@ -59,18 +59,24 @@ if __name__ == "__main__":
 	fip.close()
 	
 	#dns
-	fipdns = open('lastIPDNS.txt')
+	fipdns = open('LastIPDNS.txt')
 	lastipdns = fipdns.read()
 	fipdns.close()
+	
+	#mail
+	fipmail = open('LastIPMAIL.txt')
+	lastipmail = fipmail.read()
+	fipmail.close()
 	
 	#get current ip
 	strIP = GetIP()
 	
 	#send email
-	if send_mail(mailto_list,"AutoIP",strIP):
-		print "success"
-	else:
-		print "failed"
+	if strIP != lastipmail:
+		if send_mail(mailto_list,"Lastest IP",strIP):
+			fip = open('LastIPMAIL.txt','w')
+			fip.write(strIP)
+			fip.close()
 		
 	#decide if refresh blog (and send mail)
 	if strIP != lastip:	
@@ -93,8 +99,8 @@ if __name__ == "__main__":
 			
 	#decide if refresh ddns
 	if strIP != lastipdns:
-		pagesta = urllib.urlopen('http://update.dnsexit.com/RemoteUpdate.sv?login=autoipsend&password=357pis&host=ip507.linkpc.net&myip=' + strIP)
-		if pagesta.getcode() == 200:
+		returnCode = urllib.urlopen('http://autoipsend:357pis@ddns.oray.com/ph/update?hostname=ip507.wicp.net&myip=' + strIP + '&mode=http&user=autoipsend&password=357pis').getcode()
+		if returnCode == 200:
 			fip = open('LastIPDNS.txt','w')
 			fip.write(strIP)
 			fip.close()
