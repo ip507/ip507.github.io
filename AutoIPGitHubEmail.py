@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 
 import urllib
+import socket
+socket.setdefaulttimeout(5)
 import datetime
 import shutil
 import os
@@ -33,7 +35,7 @@ def send_mail(to_list,sub,content):
 	
 #get ip from router web page
 def GetIP():
-	strRaw = urllib.urlopen("http://admin:admin@192.168.1.1/userRpm/StatusRpm.htm").read()
+	strRaw = urllib.urlopen("http://ipget:357159@192.168.1.1/userRpm/StatusRpm.htm").read()
 	index = strRaw.find("var wanPara")
 	if index == -1:
 		print failed
@@ -69,7 +71,11 @@ if __name__ == "__main__":
 	fipmail.close()
 	
 	#get current ip
+	strIP = '0.0.0.0'
 	strIP = GetIP()
+	print strIP
+	if strIP == '0.0.0.0':
+		exit(201)
 	
 	#send email
 	if strIP != lastipmail:
